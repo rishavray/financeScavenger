@@ -30,10 +30,13 @@ for pages in archive_pages:
 	s = BeautifulSoup(html_page)
 	mydivs = s.findAll("div", { "class" : "archive_tab_list1" })
 	for divs in mydivs:
-		l = BeautifulSoup(str(divs))
-		for k in l.findAll('a'):
-			links.append(k.get('href'))
+		l = BeautifulSoup(str(divs),convertEntities=BeautifulSoup.HTML_ENTITIES)
+		for u in link.findAll('ul'):
+			cat = (u.li.span.string).strip()
+			for anchor in u.findAll('a'):
+				links.append(anchor.get('href'),cat)
 
-	for url in links:
+	for tup in links:
+		url , cat = tup
 		article = g.extract(url=url)
-		print date + ' :: ' + (article.title).encode('UTF-8') + ' :: ' + (article.meta_description).encode('UTF-8')
+		print date + ' :: ' + (article.title).encode('UTF-8') + ' :: ' + (article.meta_description).encode('UTF-8') + ' :: ' + cat
